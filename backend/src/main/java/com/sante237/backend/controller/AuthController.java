@@ -1,5 +1,6 @@
 package com.sante237.backend.controller;
 
+import jakarta.validation.Valid;
 import com.sante237.backend.dto.LoginRequest;
 import com.sante237.backend.dto.RegisterRequest;
 import com.sante237.backend.model.*;
@@ -28,7 +29,7 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@Valid@RequestBody RegisterRequest request) {
         if (utilisateurRepository.existsByEmail(request.getEmail())) {
             return ResponseEntity.badRequest().body("Email déjà utilisé !");
         }
@@ -53,7 +54,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
         return utilisateurRepository.findByEmail(request.getEmail())
                 .map(user -> {
                     if (passwordEncoder.matches(request.getMotDePasse(), user.getMotDePasse())) {

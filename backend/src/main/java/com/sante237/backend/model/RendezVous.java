@@ -17,6 +17,9 @@ public class RendezVous {
     private int duree;
     private String statut;
 
+    public String getStatut() { return statut; }
+public void setStatut(String statut) { this.statut = statut; }
+
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
