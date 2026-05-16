@@ -1,5 +1,7 @@
 package com.sante237.backend.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import com.sante237.backend.dto.LoginRequest;
 import com.sante237.backend.dto.RegisterRequest;
@@ -54,6 +56,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @Operation(summary = "Se connecter", description = "Authentification avec email et mot de passe")
+    @ApiResponse(responseCode = "200", description = "Connexion réussie, retourne le JWT")
+    @ApiResponse(responseCode = "400", description = "Email ou mot de passe incorrect")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
         return utilisateurRepository.findByEmail(request.getEmail())
                 .map(user -> {

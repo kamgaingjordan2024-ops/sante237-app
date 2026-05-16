@@ -12,6 +12,7 @@ public class Hopital {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_hopital;
 
+    @Column(nullable = false, unique = true)
     private String nom;
     private String adresse;
     private String telephone;
