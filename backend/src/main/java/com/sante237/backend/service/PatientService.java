@@ -19,7 +19,7 @@ public class PatientService implements IPatientService {
 
     private PatientResponseDTO convertToResponseDTO(Patient patient) {
         return new PatientResponseDTO(
-            patient.getId_utilisateur(),
+            patient.getIdUtilisateur(),
             patient.getNom(),
             patient.getPrenom(),
             patient.getTelephone(),

@@ -22,7 +22,7 @@ public class HopitalService implements IHopitalService {
      */
     private HopitalResponseDTO convertToResponseDTO(Hopital hopital) {
         return new HopitalResponseDTO(
-            hopital.getId_hopital(),
+            hopital.getIdhopital(),
             hopital.getNom(),
             hopital.getAdresse(),
             hopital.getTelephone()

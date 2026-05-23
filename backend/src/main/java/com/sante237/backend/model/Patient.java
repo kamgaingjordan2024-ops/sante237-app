@@ -1,9 +1,11 @@
 package com.sante237.backend.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "patients")
 public class Patient extends Utilisateur {

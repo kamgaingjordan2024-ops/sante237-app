@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import com.sante237.backend.dto.LoginRequest;
 import com.sante237.backend.dto.RegisterRequest;
 import com.sante237.backend.model.*;
+import com.sante237.backend.repository.AdministrateurRepository;
 import com.sante237.backend.repository.UtilisateurRepository;
 import com.sante237.backend.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,34 +26,60 @@ public class AuthController {
     private UtilisateurRepository utilisateurRepository;
 
     @Autowired
+    private AdministrateurRepository administrateurRepository;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid@RequestBody RegisterRequest request) {
+    @Operation(summary = "S'inscrire", description = "Inscription - tout utilisateur devient PATIENT par défaut")
+    @ApiResponse(responseCode = "200", description = "Inscription réussie")
+    @ApiResponse(responseCode = "400", description = "Email déjà utilisé")
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
         if (utilisateurRepository.existsByEmail(request.getEmail())) {
             return ResponseEntity.badRequest().body("Email déjà utilisé !");
         }
 
-        Utilisateur user;
-        switch (request.getRole().toUpperCase()) {
-            case "PATIENT" -> user = new Patient();
-            case "MEDECIN" -> user = new Medecin();
-            case "ADMINISTRATEUR" -> user = new Administrateur();
-            default -> { return ResponseEntity.badRequest().body("Rôle invalide !"); }
-        }
-
+        // Tout utilisateur s'inscrit comme PATIENT par défaut
+        Patient user = new Patient();
         user.setNom(request.getNom());
         user.setPrenom(request.getPrenom());
         user.setEmail(request.getEmail());
         user.setTelephone(request.getTelephone());
-        user.setRole(request.getRole().toUpperCase());
+        user.setRole("PATIENT");
         user.setMotDePasse(passwordEncoder.encode(request.getMotDePasse()));
 
         utilisateurRepository.save(user);
         return ResponseEntity.ok("Inscription réussie !");
+    }
+
+    @PostMapping("/register/admin")
+    @Operation(summary = "Créer l'administrateur", description = "Crée le compte administrateur unique du système")
+    @ApiResponse(responseCode = "200", description = "Administrateur créé avec succès")
+    @ApiResponse(responseCode = "400", description = "Un administrateur existe déjà")
+    public ResponseEntity<?> registerAdmin(@Valid @RequestBody RegisterRequest request) {
+        // Vérifier qu'il n'existe pas déjà un administrateur
+        if (administrateurRepository.count() > 0) {
+            return ResponseEntity.badRequest().body("Un administrateur existe déjà !");
+        }
+
+        if (utilisateurRepository.existsByEmail(request.getEmail())) {
+            return ResponseEntity.badRequest().body("Email déjà utilisé !");
+        }
+
+        Administrateur admin = new Administrateur();
+        admin.setNom(request.getNom());
+        admin.setPrenom(request.getPrenom());
+        admin.setEmail(request.getEmail());
+        admin.setTelephone(request.getTelephone());
+        admin.setRole("ADMINISTRATEUR");
+        admin.setMotDePasse(passwordEncoder.encode(request.getMotDePasse()));
+
+        utilisateurRepository.save(admin);
+        return ResponseEntity.ok("Administrateur créé avec succès !");
     }
 
     @PostMapping("/login")
@@ -67,6 +94,7 @@ public class AuthController {
                         Map<String, String> response = new HashMap<>();
                         response.put("token", token);
                         response.put("role", user.getRole());
+                        response.put("id", user.getIdUtilisateur().toString());
                         return ResponseEntity.ok(response);
                     }
                     return ResponseEntity.badRequest().body("Mot de passe incorrect !");

@@ -24,11 +24,11 @@ public class RendezVousService implements IRendezVousService {
             r.getId_rendezvous(),
             r.getDateHeure() != null ? r.getDateHeure().toString() : null,
             r.getDuree(), r.getStatut(),
-            r.getPatient() != null ? r.getPatient().getId_utilisateur() : null,
+            r.getPatient() != null ? r.getPatient().getIdUtilisateur() : null,
             r.getPatient() != null ? r.getPatient().getNom() + " " + r.getPatient().getPrenom() : null,
-            r.getMedecin() != null ? r.getMedecin().getId_utilisateur() : null,
+            r.getMedecin() != null ? r.getMedecin().getIdUtilisateur() : null,
             r.getMedecin() != null ? r.getMedecin().getNom() + " " + r.getMedecin().getPrenom() : null,
-            r.getCreneau() != null ? r.getCreneau().getId_creneau() : null
+            r.getCreneau() != null ? r.getCreneau().getIdcreneau() : null
         );
     }
 

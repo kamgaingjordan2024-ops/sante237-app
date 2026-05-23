@@ -32,7 +32,7 @@ public class AvisService implements IAvisService {
             a.getId_avis(),
             a.getCommentaire(),
             a.getNote(),
-            a.getPatient() != null ? a.getPatient().getId_utilisateur() : null,
+            a.getPatient() != null ? a.getPatient().getIdUtilisateur() : null,
             a.getPatient() != null ? a.getPatient().getNom() + " " + a.getPatient().getPrenom() : null,
             a.getRendezVous() != null ? a.getRendezVous().getId_rendezvous() : null
         );

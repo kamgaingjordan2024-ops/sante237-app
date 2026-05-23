@@ -66,6 +66,7 @@ public class CreneauController {
     public ResponseEntity<Void> deleteCreneau(
         @Parameter(description = "ID du créneau", example = "1") @PathVariable Long id) {
         return creneauService.deleteCreneau(id)
+        
             ? ResponseEntity.noContent().build()
             : ResponseEntity.notFound().build();
     }

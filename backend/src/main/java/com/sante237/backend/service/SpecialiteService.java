@@ -17,7 +17,7 @@ public class SpecialiteService implements ISpecialiteService {
     private SpecialiteRepository specialiteRepository;
 
     private SpecialiteResponseDTO convertToResponseDTO(Specialite s) {
-        return new SpecialiteResponseDTO(s.getId_specialite(), s.getNom());
+        return new SpecialiteResponseDTO(s.getIdSpecialite(), s.getNom());
     }
 
     @Override

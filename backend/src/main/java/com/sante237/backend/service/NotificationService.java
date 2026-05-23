@@ -29,7 +29,7 @@ public class NotificationService implements INotificationService {
             n.getMessage(),
             n.getDateEnvoi() != null ? n.getDateEnvoi().toString() : null,
             n.isLue(),
-            n.getUtilisateur() != null ? n.getUtilisateur().getId_utilisateur() : null,
+            n.getUtilisateur() != null ? n.getUtilisateur().getIdUtilisateur() : null,
             n.getUtilisateur() != null ? n.getUtilisateur().getNom() + " " + n.getUtilisateur().getPrenom() : null
         );
     }

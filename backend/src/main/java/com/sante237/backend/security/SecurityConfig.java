@@ -30,7 +30,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/admin/**").hasRole("ADMINISTRATEUR")
                         .requestMatchers("/api/medecin/**").hasRole("MEDECIN")
                         .requestMatchers("/api/patient/**").hasRole("PATIENT")
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
             .addFilterBefore(jwtFilter, 
                 UsernamePasswordAuthenticationFilter.class);
         return http.build();

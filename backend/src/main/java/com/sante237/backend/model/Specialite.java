@@ -10,7 +10,7 @@ public class Specialite {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_specialite;
+    private Long idSpecialite;
 
     private String nom;
 }
