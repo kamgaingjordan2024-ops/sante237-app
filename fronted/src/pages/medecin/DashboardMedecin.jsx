@@ -83,7 +83,30 @@ const fetchCreneaux = async () => {
       }
     } catch { setError("Erreur suppression."); }
   };
-
+const handleUpdateStatut = async (id, statut) => {
+  try {
+    // Trouver le RDV concerné pour récupérer tous ses champs
+    const rdv = rendezvous.find(r => r.id_rendezvous === id);
+    const res = await fetch(`${API}/api/rendezvous/${id}`, {
+      method: "PUT",
+      headers,
+      body: JSON.stringify({
+        statut: statut,
+        dateHeure: rdv?.dateHeure,
+        duree: rdv?.duree,
+        patientId: rdv?.patientId,
+        medecinId: rdv?.medecinId,
+        creneauId: rdv?.creneauId,
+      }),
+    });
+    if (res.ok) {
+      setSuccess(`Rendez-vous ${statut === "CONFIRME" ? "confirmé" : "rejeté"} !`);
+      fetchRendezvous();
+    } else {
+      setError("Erreur lors de la mise à jour.");
+    }
+  } catch { setError("Impossible de contacter le serveur."); }
+};
   const formatDate = (dt) => {
     if (!dt) return "";
     return new Date(dt).toLocaleDateString("fr-FR", {
@@ -263,29 +286,49 @@ const fetchCreneaux = async () => {
                 Aucun rendez-vous pour le moment.
               </p>
             )}
-            {rendezvous.map((r) => (
-              <div key={r.id_rendezvous} style={{
-                padding: "16px 0", borderBottom: "1px solid #f1f5f9"
-              }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <div>
-                    <div style={{ fontWeight: 600, color: "#0f172a", fontSize: 14 }}>
-                      👤 {r.patientNom}
-                    </div>
-                    <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>
-                      📅 {formatDate(r.dateHeure)} &nbsp;•&nbsp; ⏱️ {r.duree} min
-                    </div>
-                  </div>
-                  <span style={{
-                    padding: "4px 12px", borderRadius: 20, fontSize: 11, fontWeight: 700,
-                    background: r.statut === "PLANIFIE" ? "#dbeafe" : r.statut === "CONFIRME" ? "#dcfce7" : "#fee2e2",
-                    color: r.statut === "PLANIFIE" ? "#1d4ed8" : r.statut === "CONFIRME" ? "#166534" : "#dc2626",
-                  }}>
-                    {r.statut}
-                  </span>
-                </div>
-              </div>
-            ))}
+           {rendezvous.map((r) => (
+  <div key={r.id_rendezvous} style={{
+    padding: "16px 0", borderBottom: "1px solid #f1f5f9"
+  }}>
+    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div>
+        <div style={{ fontWeight: 600, color: "#0f172a", fontSize: 14 }}>
+          👤 {r.patientNom}
+        </div>
+        <div style={{ fontSize: 12, color: "#64748b", marginTop: 4 }}>
+          📅 {formatDate(r.dateHeure)} &nbsp;•&nbsp; ⏱️ {r.duree} min
+        </div>
+      </div>
+      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+        <span style={{
+          padding: "4px 12px", borderRadius: 20, fontSize: 11, fontWeight: 700,
+          background: r.statut === "PLANIFIE" ? "#dbeafe" : r.statut === "CONFIRME" ? "#dcfce7" : "#fee2e2",
+          color: r.statut === "PLANIFIE" ? "#1d4ed8" : r.statut === "CONFIRME" ? "#166534" : "#dc2626",
+        }}>
+          {r.statut}
+        </span>
+        {r.statut === "PLANIFIE" && (
+          <>
+            <button onClick={() => handleUpdateStatut(r.id_rendezvous, "CONFIRME")} style={{
+              padding: "6px 12px", borderRadius: 8, border: "none",
+              background: "#dcfce7", color: "#166534",
+              cursor: "pointer", fontSize: 12, fontWeight: 600
+            }}>
+              ✅ Confirmer
+            </button>
+            <button onClick={() => handleUpdateStatut(r.id_rendezvous, "REJETE")} style={{
+              padding: "6px 12px", borderRadius: 8, border: "none",
+              background: "#fee2e2", color: "#dc2626",
+              cursor: "pointer", fontSize: 12, fontWeight: 600
+            }}>
+              ❌ Rejeter
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  </div>
+))}
           </div>
         )}
 
