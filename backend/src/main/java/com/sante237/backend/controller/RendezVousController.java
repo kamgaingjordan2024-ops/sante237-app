@@ -36,6 +36,13 @@ public class RendezVousController {
         @Parameter(description = "ID du rendez-vous", example = "1") @PathVariable Long id) {
         return new ResponseEntity<>(rendezVousService.getRendezVousById(id), HttpStatus.OK);
     }
+    @GetMapping("/medecin/{medecinId}")
+@Operation(summary = "Lister les rendez-vous d'un médecin")
+@ApiResponse(responseCode = "200", description = "Liste récupérée avec succès")
+public ResponseEntity<List<RendezVousResponseDTO>> getRendezVousByMedecin(
+    @Parameter(description = "ID du médecin", example = "1") @PathVariable Long medecinId) {
+    return ResponseEntity.ok(rendezVousService.getRendezVousByMedecin(medecinId));
+}
 
     @PostMapping
     @Operation(summary = "Créer un nouveau rendez-vous")

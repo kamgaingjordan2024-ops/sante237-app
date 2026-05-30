@@ -98,4 +98,9 @@ public class CreneauService implements ICreneauService {
 
     @Override
     public boolean creneauExists(Long id) { return creneauRepository.existsById(id); }
+@Override
+public List<CreneauResponseDTO> getCreneauxByMedecin(Long medecinId) {
+    return creneauRepository.findByMedecin_IdUtilisateur(medecinId)
+        .stream().map(this::convertToResponseDTO).collect(Collectors.toList());
+}
 }

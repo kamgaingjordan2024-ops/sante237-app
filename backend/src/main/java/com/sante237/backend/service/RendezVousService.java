@@ -96,4 +96,9 @@ public class RendezVousService implements IRendezVousService {
 
     @Override
     public boolean rendezVousExists(Long id) { return rendezVousRepository.existsById(id); }
+@Override
+public List<RendezVousResponseDTO> getRendezVousByMedecin(Long medecinId) {
+    return rendezVousRepository.findByMedecin_IdUtilisateur(medecinId)
+        .stream().map(this::convertToResponseDTO).collect(Collectors.toList());
+}
 }

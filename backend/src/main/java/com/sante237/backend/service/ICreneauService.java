@@ -10,4 +10,5 @@ public interface ICreneauService {
     CreneauResponseDTO updateCreneau(Long id, CreneauRequestDTO dto);
     boolean deleteCreneau(Long id);
     boolean creneauExists(Long id);
+      List<CreneauResponseDTO> getCreneauxByMedecin(Long medecinId);
 }

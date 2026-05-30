@@ -36,6 +36,13 @@ public class CreneauController {
         @Parameter(description = "ID du créneau", example = "1") @PathVariable Long id) {
         return new ResponseEntity<>(creneauService.getCreneauById(id), HttpStatus.OK);
     }
+    @GetMapping("/medecin/{medecinId}")
+@Operation(summary = "Lister les créneaux d'un médecin")
+@ApiResponse(responseCode = "200", description = "Liste récupérée avec succès")
+public ResponseEntity<List<CreneauResponseDTO>> getCreneauxByMedecin(
+    @Parameter(description = "ID du médecin", example = "1") @PathVariable Long medecinId) {
+    return ResponseEntity.ok(creneauService.getCreneauxByMedecin(medecinId));
+}
 
     @PostMapping
     @Operation(summary = "Créer un nouveau créneau")

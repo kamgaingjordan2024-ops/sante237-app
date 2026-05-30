@@ -17,6 +17,8 @@ export default function SelectCreneau({ onNavigate, rdvData, setRdvData }) {
       .then(res => res.json())
       .then(data => {
         const liste = Array.isArray(data) ? data : [];
+        console.log("Medecin ID:", rdv?.medecin?.id_utilisateur);
+        console.log("Creneaux:", JSON.stringify(liste[0]));
         const filtres = liste.filter(c => c.disponible === true &&
            String (c.medecinId) === String(rdv?.medecin?.id_utilisateur)
         );
