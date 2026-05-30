@@ -8,6 +8,7 @@ public interface INotificationService {
 
     /** Récupère la liste de toutes les notifications */
     List<NotificationResponseDTO> getAllNotifications();
+    List<NotificationResponseDTO> getNotificationsByUtilisateur(Long utilisateurId);
 
     /** Récupère une notification par son ID */
     NotificationResponseDTO getNotificationById(Long id);

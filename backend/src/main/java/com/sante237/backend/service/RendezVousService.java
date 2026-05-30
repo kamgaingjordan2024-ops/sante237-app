@@ -1,4 +1,5 @@
 package com.sante237.backend.service;
+import com.sante237.backend.dto.NotificationRequestDTO;
 import com.sante237.backend.dto.RendezVousRequestDTO;
 import com.sante237.backend.dto.RendezVousResponseDTO;
 import com.sante237.backend.model.*;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import com.sante237.backend.dto.NotificationRequestDTO;
 
 @Service
 public class RendezVousService implements IRendezVousService {
@@ -18,6 +20,8 @@ public class RendezVousService implements IRendezVousService {
     @Autowired private PatientRepository patientRepository;
     @Autowired private MedecinRepository medecinRepository;
     @Autowired private CreneauRepository creneauRepository;
+    @Autowired private NotificationService notificationService;
+
 
     private RendezVousResponseDTO convertToResponseDTO(RendezVous r) {
         return new RendezVousResponseDTO(
@@ -66,27 +70,42 @@ public class RendezVousService implements IRendezVousService {
     }
 
     @Override
-    public RendezVousResponseDTO updateRendezVous(Long id, RendezVousRequestDTO dto) {
-        Optional<RendezVous> rv = rendezVousRepository.findById(id);
-        if (rv.isPresent()) {
-            RendezVous existing = rv.get();
-            existing.setDateHeure(LocalDateTime.parse(dto.getDateHeure()));
-            existing.setDuree(dto.getDuree());
-            existing.setStatut(dto.getStatut());
-            if (dto.getPatientId() != null)
-                existing.setPatient(patientRepository.findById(dto.getPatientId())
-                    .orElseThrow(() -> new EntityNotFoundException("Patient non trouvé")));
-            if (dto.getMedecinId() != null)
-                existing.setMedecin(medecinRepository.findById(dto.getMedecinId())
-                    .orElseThrow(() -> new EntityNotFoundException("Médecin non trouvé")));
-            if (dto.getCreneauId() != null)
-                existing.setCreneau(creneauRepository.findById(dto.getCreneauId())
-                    .
-                    orElseThrow(() -> new EntityNotFoundException("Créneau non trouvé")));
-            return convertToResponseDTO(rendezVousRepository.save(existing));
+public RendezVousResponseDTO updateRendezVous(Long id, RendezVousRequestDTO dto) {
+    Optional<RendezVous> rv = rendezVousRepository.findById(id);
+    if (rv.isPresent()) {
+        RendezVous existing = rv.get();
+        existing.setDateHeure(LocalDateTime.parse(dto.getDateHeure()));
+        existing.setDuree(dto.getDuree());
+        existing.setStatut(dto.getStatut());
+        if (dto.getPatientId() != null)
+            existing.setPatient(patientRepository.findById(dto.getPatientId())
+                .orElseThrow(() -> new EntityNotFoundException("Patient non trouvé")));
+        if (dto.getMedecinId() != null)
+            existing.setMedecin(medecinRepository.findById(dto.getMedecinId())
+                .orElseThrow(() -> new EntityNotFoundException("Médecin non trouvé")));
+        if (dto.getCreneauId() != null)
+            existing.setCreneau(creneauRepository.findById(dto.getCreneauId())
+                .orElseThrow(() -> new EntityNotFoundException("Créneau non trouvé")));
+
+        RendezVous saved = rendezVousRepository.save(existing);
+
+        // 👇 Envoyer notification au patient
+        if (dto.getStatut() != null && saved.getPatient() != null) {
+            String message = dto.getStatut().equals("CONFIRME")
+                ? "✅ Votre rendez-vous du " + saved.getDateHeure().toString() + " a été confirmé par le médecin."
+                : "❌ Votre rendez-vous du " + saved.getDateHeure().toString() + " a été annulé par le médecin.";
+
+            NotificationRequestDTO notifDto = new NotificationRequestDTO();
+            notifDto.setMessage(message);
+            notifDto.setLue(false);
+            notifDto.setUtilisateurId(saved.getPatient().getIdUtilisateur());
+            notificationService.createNotification(notifDto);
         }
-        throw new RuntimeException("Rendez-vous non trouvé avec l'ID: " + id);
+
+        return convertToResponseDTO(saved);
     }
+    throw new RuntimeException("Rendez-vous non trouvé avec l'ID: " + id);
+}
 
     @Override
     public boolean deleteRendezVous(Long id) {

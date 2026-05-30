@@ -29,15 +29,28 @@ export default function SelectHopital({ onNavigate, rdvData, setRdvData }) {
   return (
     <div style={{ minHeight: "100vh", background: "linear-gradient(135deg, #f0f7ff, #dbeafe)", padding: 24 }}>
 
-      {/* Header */}
-      <div style={{ maxWidth: 700, margin: "0 auto" }}>
-        <button onClick={() => onNavigate("home")} style={{
-          background: "none", border: "none", cursor: "pointer",
-          color: "#1a5fd4", fontSize: 14, fontWeight: 600, marginBottom: 24,
-          display: "flex", alignItems: "center", gap: 6,
-        }}>
-          Retour
-        </button>
+     {/* Header */}
+<div style={{ maxWidth: 700, margin: "0 auto" }}>
+  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+    <button onClick={() => onNavigate("home")} style={{
+      background: "none", border: "none", cursor: "pointer",
+      color: "#1a5fd4", fontSize: 14, fontWeight: 600,
+      display: "flex", alignItems: "center", gap: 6,
+    }}>
+      Retour
+    </button>
+
+    {/* 👇 Bouton notifications */}
+    <button onClick={() => onNavigate("notifications")} style={{
+      background: "white", border: "1px solid #e2e8f0",
+      borderRadius: 10, padding: "8px 16px",
+      cursor: "pointer", display: "flex", alignItems: "center", gap: 8,
+      fontSize: 14, fontWeight: 600, color: "#1a5fd4",
+      boxShadow: "0 2px 4px rgba(0,0,0,0.06)",
+    }}>
+      🔔 Notifications
+    </button>
+  </div>
 
         {/* Progression */}
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 32 }}>

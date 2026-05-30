@@ -7,6 +7,8 @@ import SelectMedecin from "./pages/rdv/SelectMedecin";
 import SelectCreneau from "./pages/rdv/SelectCreneau";
 import ConfirmRdv from "./pages/rdv/ConfirmRdv";
 import DashboardMedecin from "./pages/medecin/DashboardMedecin";
+import Notifications from "./pages/patient/Notifications";
+
 
 export default function App() {
   const [page, setPage] = useState("home");
@@ -55,6 +57,10 @@ export default function App() {
   if (page === "dashboard-medecin") {
     return <DashboardMedecin onNavigate={setPage} />;
   }
+  
+  if (page === "notifications") {
+  return <Notifications onNavigate={setPage} />;
+}
 
   return <LandingPage onNavigate={setPage} />;
 }

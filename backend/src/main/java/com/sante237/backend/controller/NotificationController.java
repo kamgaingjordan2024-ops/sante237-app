@@ -35,6 +35,13 @@ public class NotificationController {
         @Parameter(description = "ID de la notification", example = "1") @PathVariable Long id) {
         return new ResponseEntity<>(notificationService.getNotificationById(id), HttpStatus.OK);
     }
+    @GetMapping("/utilisateur/{utilisateurId}")
+@Operation(summary = "Lister les notifications d'un utilisateur")
+@ApiResponse(responseCode = "200", description = "Liste récupérée avec succès")
+public ResponseEntity<List<NotificationResponseDTO>> getNotificationsByUtilisateur(
+    @Parameter(description = "ID de l'utilisateur", example = "1") @PathVariable Long utilisateurId) {
+    return ResponseEntity.ok(notificationService.getNotificationsByUtilisateur(utilisateurId));
+}
 
     @PostMapping
     @Operation(summary = "Créer une notification")

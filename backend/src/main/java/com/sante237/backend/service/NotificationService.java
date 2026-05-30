@@ -88,4 +88,9 @@ public class NotificationService implements INotificationService {
         }
         return false;
     }
+    @Override
+public List<NotificationResponseDTO> getNotificationsByUtilisateur(Long utilisateurId) {
+    return notificationRepository.findByUtilisateur_IdUtilisateur(utilisateurId)
+        .stream().map(this::convertToResponseDTO).collect(Collectors.toList());
+}
 }
