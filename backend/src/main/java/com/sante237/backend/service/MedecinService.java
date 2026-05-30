@@ -42,7 +42,7 @@ public class MedecinService implements IMedecinService {
                 medecin.getTelephone(),
                 medecin.getEmail(),
                 medecin.getMatricule(),
-                medecin.getHopital() != null ? medecin.getHopital().getIdhopital() : null,
+                medecin.getHopital() != null ? medecin.getHopital().getIdHopital() : null,
                 medecin.getHopital() != null ? medecin.getHopital().getNom() : null,
                 specialites
         );

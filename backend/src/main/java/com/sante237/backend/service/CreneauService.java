@@ -24,12 +24,12 @@ public class CreneauService implements ICreneauService {
 
     private CreneauResponseDTO convertToResponseDTO(Creneau c) {
         return new CreneauResponseDTO(
-            c.getIdcreneau(),
+            c.getIdCreneau(),
             c.getDateHeure() != null ? c.getDateHeure().toString() : null,
             c.getDuree(), c.isDisponible(),
             c.getMedecin() != null ? c.getMedecin().getIdUtilisateur() : null,
             null,
-            c.getHopital() != null ? c.getHopital().getIdhopital() : null,
+            c.getHopital() != null ? c.getHopital().getIdHopital() : null,
             c.getHopital() != null ? c.getHopital().getNom() : null
         );
     }

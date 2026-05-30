@@ -28,7 +28,7 @@ public class RendezVousService implements IRendezVousService {
             r.getPatient() != null ? r.getPatient().getNom() + " " + r.getPatient().getPrenom() : null,
             r.getMedecin() != null ? r.getMedecin().getIdUtilisateur() : null,
             r.getMedecin() != null ? r.getMedecin().getNom() + " " + r.getMedecin().getPrenom() : null,
-            r.getCreneau() != null ? r.getCreneau().getIdcreneau() : null
+            r.getCreneau() != null ? r.getCreneau().getIdCreneau() : null
         );
     }
 

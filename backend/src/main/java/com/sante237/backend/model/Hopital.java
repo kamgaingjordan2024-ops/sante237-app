@@ -10,7 +10,7 @@ public class Hopital {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Idhopital;
+    private Long idHopital;
 
     @Column(nullable = false, unique = true)
     private String nom;
