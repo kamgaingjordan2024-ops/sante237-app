@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import com.sante237.backend.dto.NotificationRequestDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RendezVousService implements IRendezVousService {
@@ -88,19 +89,24 @@ public RendezVousResponseDTO updateRendezVous(Long id, RendezVousRequestDTO dto)
                 .orElseThrow(() -> new EntityNotFoundException("Créneau non trouvé")));
 
         RendezVous saved = rendezVousRepository.save(existing);
+System.out.println("=== DEBUG NOTIFICATION ===");
+System.out.println("Statut: " + dto.getStatut());
+System.out.println("Patient: " + saved.getPatient());
+System.out.println("PatientId reçu: " + dto.getPatientId());
+       // Envoyer notification au patient seulement pour CONFIRME ou REJETE
+if (saved.getPatient() != null && 
+    (dto.getStatut().equals("CONFIRME") || dto.getStatut().equals("REJETE"))) {
+    
+    String message = dto.getStatut().equals("CONFIRME")
+        ? "✅ Votre rendez-vous du " + saved.getDateHeure().toString() + " a été confirmé par le médecin."
+        : "❌ Votre rendez-vous du " + saved.getDateHeure().toString() + " a été annulé par le médecin.";
 
-        // 👇 Envoyer notification au patient
-        if (dto.getStatut() != null && saved.getPatient() != null) {
-            String message = dto.getStatut().equals("CONFIRME")
-                ? "✅ Votre rendez-vous du " + saved.getDateHeure().toString() + " a été confirmé par le médecin."
-                : "❌ Votre rendez-vous du " + saved.getDateHeure().toString() + " a été annulé par le médecin.";
-
-            NotificationRequestDTO notifDto = new NotificationRequestDTO();
-            notifDto.setMessage(message);
-            notifDto.setLue(false);
-            notifDto.setUtilisateurId(saved.getPatient().getIdUtilisateur());
-            notificationService.createNotification(notifDto);
-        }
+    NotificationRequestDTO notifDto = new NotificationRequestDTO();
+    notifDto.setMessage(message);
+    notifDto.setLue(false);
+    notifDto.setUtilisateurId(saved.getPatient().getIdUtilisateur());
+    notificationService.createNotification(notifDto);
+}
 
         return convertToResponseDTO(saved);
     }
@@ -116,6 +122,7 @@ public RendezVousResponseDTO updateRendezVous(Long id, RendezVousRequestDTO dto)
     @Override
     public boolean rendezVousExists(Long id) { return rendezVousRepository.existsById(id); }
 @Override
+@Transactional
 public List<RendezVousResponseDTO> getRendezVousByMedecin(Long medecinId) {
     return rendezVousRepository.findByMedecin_IdUtilisateur(medecinId)
         .stream().map(this::convertToResponseDTO).collect(Collectors.toList());

@@ -26,19 +26,28 @@ export default function ConfirmRdv({ onNavigate, rdvData, setRdvData }) {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const rdv = JSON.parse(localStorage.getItem("rdvData") || "{}");
-console.log("USER:", user);
+console.log("CRENEAU complet:", rdv?.creneau);
+    console.log("USER:", user);
 console.log("RDV:", rdv);
-    try {
+console.log("Payload envoyé:", {
+    patientId: user?.id_utilisateur || user?.idUtilisateur || user?.id,
+    medecinId: rdv?.medecin?.id_utilisateur,
+    creneauId: rdv?.creneau?.idCreneau,
+    dateHeure: rdv?.creneau?.dateHeure,
+});   
+console.log("CRENEAU dans rdv:", rdv?.creneau);
+console.log("Clés du creneau:", Object.keys(rdv?.creneau || {}));
+try {
       const res = await fetch(`${API}/api/rendezvous`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-     body: JSON.stringify({
-  patientId: user?.id_utilisateur || user?.idUtilisateur,
-  medecinId: rdv?.medecin?.id_utilisateur,
-  creneauId: rdv?.creneau?.idCreneau,
+   body: JSON.stringify({
+  patientId: parseInt(user?.id || user?.id_utilisateur || user?.idUtilisateur),
+  medecinId: rdv?.medecin?.id_utilisateur || rdv?.medecin?.idUtilisateur,
+ creneauId: rdv?.creneau?.id_creneau,
   dateHeure: rdv?.creneau?.dateHeure,
   duree: rdv?.creneau?.duree,
   statut: "PLANIFIE",

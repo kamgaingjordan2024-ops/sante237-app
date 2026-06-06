@@ -85,18 +85,21 @@ const fetchCreneaux = async () => {
   };
 const handleUpdateStatut = async (id, statut) => {
   try {
-    // Trouver le RDV concerné pour récupérer tous ses champs
-    const rdv = rendezvous.find(r => r.id_rendezvous === id);
+    // Récupérer le RDV complet depuis le backend
+    const resRdv = await fetch(`${API}/api/rendezvous/${id}`, { headers });
+    const rdvComplet = await resRdv.json();
+    console.log("RDV depuis backend:", rdvComplet);
+
     const res = await fetch(`${API}/api/rendezvous/${id}`, {
       method: "PUT",
       headers,
       body: JSON.stringify({
         statut: statut,
-        dateHeure: rdv?.dateHeure,
-        duree: rdv?.duree,
-        patientId: rdv?.patientId,
-        medecinId: rdv?.medecinId,
-        creneauId: rdv?.creneauId,
+        dateHeure: rdvComplet?.dateHeure,
+        duree: rdvComplet?.duree,
+        patientId: rdvComplet?.patientId,
+        medecinId: rdvComplet?.medecinId,
+        creneauId: rdvComplet?.creneauId,
       }),
     });
     if (res.ok) {
