@@ -127,4 +127,10 @@ public List<RendezVousResponseDTO> getRendezVousByMedecin(Long medecinId) {
     return rendezVousRepository.findByMedecin_IdUtilisateur(medecinId)
         .stream().map(this::convertToResponseDTO).collect(Collectors.toList());
 }
+@Override
+@Transactional
+public List<RendezVousResponseDTO> getRendezVousByPatient(Long patientId) {
+    return rendezVousRepository.findByPatient_IdUtilisateur(patientId)
+        .stream().map(this::convertToResponseDTO).collect(Collectors.toList());
+}
 }

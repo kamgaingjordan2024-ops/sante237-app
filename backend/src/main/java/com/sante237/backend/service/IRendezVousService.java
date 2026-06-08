@@ -10,5 +10,7 @@ public interface IRendezVousService {
     RendezVousResponseDTO updateRendezVous(Long id, RendezVousRequestDTO dto);
     boolean deleteRendezVous(Long id);
     boolean rendezVousExists(Long id);
-       List<RendezVousResponseDTO> getRendezVousByMedecin(Long medecinId);
+    List<RendezVousResponseDTO> getRendezVousByMedecin(Long medecinId);
+
+    List<RendezVousResponseDTO> getRendezVousByPatient(Long patientId);
 }

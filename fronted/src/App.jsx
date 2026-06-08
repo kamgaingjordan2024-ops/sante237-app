@@ -8,6 +8,8 @@ import SelectCreneau from "./pages/rdv/SelectCreneau";
 import ConfirmRdv from "./pages/rdv/ConfirmRdv";
 import DashboardMedecin from "./pages/medecin/DashboardMedecin";
 import Notifications from "./pages/patient/Notifications";
+import HistoriqueRdv from "./pages/patient/HistoriqueRdv";
+import DashboardAdmin from "./pages/admin/DashboardAdmin";
 
 
 export default function App() {
@@ -19,16 +21,21 @@ export default function App() {
     localStorage.setItem("rdvData", JSON.stringify(data));
   };
 
-  // Redirection après connexion selon le rôle
-  const handleLoginSuccess = () => {
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
-    const role = user?.role;
-    if (role === "MEDECIN") {
-      setPage("dashboard-medecin");
-    } else {
-      setPage("select-hopital");
-    }
-  };
+  
+ const handleLoginSuccess = () => {
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+    console.log("USER après connexion:", user);
+  console.log("ROLE:", user?.role);
+  
+  const role = user?.role;
+  if (role === "MEDECIN") {
+    setPage("dashboard-medecin");
+  } else if (role === "ADMIN" || role === "ADMINISTRATEUR") {
+    setPage("dashboard-admin");
+  } else {
+    setPage("select-hopital");
+  }
+};
 
   if (page === "login" || page === "register") {
     return <LoginPage onNavigate={setPage} onSuccess={handleLoginSuccess} />;
@@ -60,6 +67,13 @@ export default function App() {
   
   if (page === "notifications") {
   return <Notifications onNavigate={setPage} />;
+}
+if (page === "historique-rdv") {
+  return <HistoriqueRdv onNavigate={setPage} />;
+}
+
+if (page === "dashboard-admin") {
+  return <DashboardAdmin onNavigate={setPage} />;
 }
 
   return <LandingPage onNavigate={setPage} />;

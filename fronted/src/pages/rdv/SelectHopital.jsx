@@ -50,6 +50,15 @@ export default function SelectHopital({ onNavigate, rdvData, setRdvData }) {
     }}>
       🔔 Notifications
     </button>
+    <button onClick={() => onNavigate("historique-rdv")} style={{
+  background: "white", border: "1px solid #e2e8f0",
+  borderRadius: 10, padding: "8px 16px",
+  cursor: "pointer", display: "flex", alignItems: "center", gap: 8,
+  fontSize: 14, fontWeight: 600, color: "#1a5fd4",
+  boxShadow: "0 2px 4px rgba(0,0,0,0.06)",
+}}>
+  📋 Mes RDV
+</button>
   </div>
 
         {/* Progression */}
