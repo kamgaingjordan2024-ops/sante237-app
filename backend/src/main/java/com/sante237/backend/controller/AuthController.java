@@ -81,7 +81,26 @@ public class AuthController {
         utilisateurRepository.save(admin);
         return ResponseEntity.ok("Administrateur créé avec succès !");
     }
+@PostMapping("/register/medecin")
+@Operation(summary = "Créer un médecin", description = "Réservé à l'administrateur - crée un compte médecin")
+@ApiResponse(responseCode = "200", description = "Médecin créé avec succès")
+@ApiResponse(responseCode = "400", description = "Email déjà utilisé")
+public ResponseEntity<?> registerMedecin(@Valid @RequestBody RegisterRequest request) {
+    if (utilisateurRepository.existsByEmail(request.getEmail())) {
+        return ResponseEntity.badRequest().body("Email déjà utilisé !");
+    }
 
+    Medecin medecin = new Medecin();
+    medecin.setNom(request.getNom());
+    medecin.setPrenom(request.getPrenom());
+    medecin.setEmail(request.getEmail());
+    medecin.setTelephone(request.getTelephone());
+    medecin.setRole("MEDECIN");
+    medecin.setMotDePasse(passwordEncoder.encode(request.getMotDePasse()));
+
+    utilisateurRepository.save(medecin);
+    return ResponseEntity.ok("Médecin créé avec succès !");
+}
     @PostMapping("/login")
     @Operation(summary = "Se connecter", description = "Authentification avec email et mot de passe")
     @ApiResponse(responseCode = "200", description = "Connexion réussie, retourne le JWT")

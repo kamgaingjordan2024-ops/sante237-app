@@ -10,14 +10,14 @@ export default function DashboardMedecin({ onNavigate }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  // Formulaire nouveau créneau
+  
   const [form, setForm] = useState({ dateHeure: "", duree: 30 });
 
   const token = localStorage.getItem("token");
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const medecinId = user?.id || user?.id_utilisateur || user?.id_utilisateur;
 
-console.log("USER:", user);
+
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
@@ -85,10 +85,10 @@ const fetchCreneaux = async () => {
   };
 const handleUpdateStatut = async (id, statut) => {
   try {
-    // Récupérer le RDV complet depuis le backend
+    
     const resRdv = await fetch(`${API}/api/rendezvous/${id}`, { headers });
     const rdvComplet = await resRdv.json();
-    console.log("RDV depuis backend:", rdvComplet);
+  
 
     const res = await fetch(`${API}/api/rendezvous/${id}`, {
       method: "PUT",

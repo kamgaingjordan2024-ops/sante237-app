@@ -10,6 +10,7 @@ import DashboardMedecin from "./pages/medecin/DashboardMedecin";
 import Notifications from "./pages/patient/Notifications";
 import HistoriqueRdv from "./pages/patient/HistoriqueRdv";
 import DashboardAdmin from "./pages/admin/DashboardAdmin";
+import Profil from "./pages/patient/Profil";
 
 
 export default function App() {
@@ -74,6 +75,9 @@ if (page === "historique-rdv") {
 
 if (page === "dashboard-admin") {
   return <DashboardAdmin onNavigate={setPage} />;
+}
+if (page === "profil") {
+  return <Profil onNavigate={setPage} />;
 }
 
   return <LandingPage onNavigate={setPage} />;

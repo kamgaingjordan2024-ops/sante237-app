@@ -98,9 +98,7 @@ export default function LandingPage({ onNavigate }) {
 
         {/* Liens + boutons */}
         <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-          {["Accueil", "Médecins", "Spécialités"].map(l => (
-            <span key={l} style={{ fontSize: 14, fontWeight: 500, color: "#475569", cursor: "pointer" }}>{l}</span>
-          ))}
+       
           <button onClick={() => onNavigate?.("register")} style={{
             padding: "9px 22px", borderRadius: 99,
             background: "transparent",

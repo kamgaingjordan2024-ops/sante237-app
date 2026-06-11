@@ -89,11 +89,7 @@ public RendezVousResponseDTO updateRendezVous(Long id, RendezVousRequestDTO dto)
                 .orElseThrow(() -> new EntityNotFoundException("Créneau non trouvé")));
 
         RendezVous saved = rendezVousRepository.save(existing);
-System.out.println("=== DEBUG NOTIFICATION ===");
-System.out.println("Statut: " + dto.getStatut());
-System.out.println("Patient: " + saved.getPatient());
-System.out.println("PatientId reçu: " + dto.getPatientId());
-       // Envoyer notification au patient seulement pour CONFIRME ou REJETE
+
 if (saved.getPatient() != null && 
     (dto.getStatut().equals("CONFIRME") || dto.getStatut().equals("REJETE"))) {
     

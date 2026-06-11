@@ -26,17 +26,6 @@ export default function ConfirmRdv({ onNavigate, rdvData, setRdvData }) {
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user") || "{}");
     const rdv = JSON.parse(localStorage.getItem("rdvData") || "{}");
-console.log("CRENEAU complet:", rdv?.creneau);
-    console.log("USER:", user);
-console.log("RDV:", rdv);
-console.log("Payload envoyé:", {
-    patientId: user?.id_utilisateur || user?.idUtilisateur || user?.id,
-    medecinId: rdv?.medecin?.id_utilisateur,
-    creneauId: rdv?.creneau?.idCreneau,
-    dateHeure: rdv?.creneau?.dateHeure,
-});   
-console.log("CRENEAU dans rdv:", rdv?.creneau);
-console.log("Clés du creneau:", Object.keys(rdv?.creneau || {}));
 try {
       const res = await fetch(`${API}/api/rendezvous`, {
         method: "POST",

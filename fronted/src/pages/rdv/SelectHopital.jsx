@@ -40,7 +40,14 @@ export default function SelectHopital({ onNavigate, rdvData, setRdvData }) {
       Retour
     </button>
 
-    {/* 👇 Bouton notifications */}
+    <button onClick={() => onNavigate("profil")} style={{
+  background: "white", border: "1px solid #e2e8f0",
+  borderRadius: 10, padding: "8px 16px",
+  cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#1a5fd4",
+  boxShadow: "0 2px 4px rgba(0,0,0,0.06)",
+}}>
+  👤 Profil
+</button>
     <button onClick={() => onNavigate("notifications")} style={{
       background: "white", border: "1px solid #e2e8f0",
       borderRadius: 10, padding: "8px 16px",
