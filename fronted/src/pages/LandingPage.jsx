@@ -176,7 +176,7 @@ export default function LandingPage({ onNavigate }) {
 
           {/* Stats */}
           <div className="fade4" style={{ display: "flex", gap: 36, marginTop: 52 }}>
-            {[{ val: "500+", label: "Médecins" }, { val: "12k+", label: "Patients" }, { val: "98%", label: "Satisfaction" }].map(s => (
+            {[{ val: "Aves des medecins experimenter", label: "" }, { val: "", label: "" }, { val: "", label: "" }].map(s => (
               <div key={s.label}>
                 <div style={{ fontFamily: "'Fraunces', serif", fontSize: 30, fontWeight: 700, color: "#1a5fd4" }}>{s.val}</div>
                 <div style={{ fontSize: 13, color: "#94a3b8", fontWeight: 500 }}>{s.label}</div>
@@ -194,14 +194,7 @@ export default function LandingPage({ onNavigate }) {
             fontSize: 100, animation: "floatA 6s ease-in-out infinite", zIndex: 2,
           }}>🏥</div>
 
-          <FloatingCard icon="👨‍⚕️" label="Médecins disponibles" value="500+"
-            style={{ top: "8%", left: "5%", animation: "floatB 7s ease-in-out infinite" }} />
-          <FloatingCard icon="📅" label="RDV aujourd'hui" value="124"
-            style={{ bottom: "18%", left: "2%", animation: "floatA 8s ease-in-out infinite" }} />
-          <FloatingCard icon="⭐" label="Note moyenne" value="4.8/5"
-            style={{ top: "20%", right: "4%", animation: "floatB 9s ease-in-out infinite" }} />
-          <FloatingCard icon="🔔" label="Rappels automatiques" value="SMS & Email"
-            style={{ bottom: "10%", right: "8%", animation: "floatA 6s ease-in-out infinite" }} />
+          
         </div>
       </section>
 
